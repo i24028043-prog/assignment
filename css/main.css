@@ -1,0 +1,515 @@
+/* 引入自定义字体 */
+@font-face {
+    font-family: 'JDL';
+    src: url('../font/jdl.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* 全局样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'JDL', 'Microsoft YaHei', sans-serif;
+    overflow-x: hidden;
+    background: linear-gradient(135deg, #ffaae1 0%, #ffc0e8 50%, #ffe0f0 100%);
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Three.js 容器 */
+#three-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* 主内容区域 */
+.main-content {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+/* 标题区域 */
+.title-section {
+    text-align: center;
+    margin-bottom: 60px;
+    animation: fadeInDown 1s ease-out;
+}
+
+.animated-title {
+    font-family: 'JDL', sans-serif;
+    font-size: 120px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 
+        0 0 20px rgba(255, 170, 225, 0.8),
+        0 0 40px rgba(255, 192, 232, 0.6),
+        0 0 60px rgba(255, 224, 240, 0.4),
+        4px 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    display: inline-block;
+    animation: 
+        titleGlow 3s ease-in-out infinite,
+        titleShake 0.5s ease-in-out infinite,
+        titleFade 4s ease-in-out infinite;
+    letter-spacing: 10px;
+    opacity: 1;
+}
+
+.animated-title.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.animated-title::before {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #ff69b4;
+    animation: titleWave 2s ease-in-out infinite;
+    z-index: -1;
+}
+
+.animated-subtitle {
+    font-size: 36px;
+    color: rgba(255, 255, 255, 0.9);
+    margin-top: 20px;
+    font-weight: 300;
+    letter-spacing: 8px;
+    animation: 
+        subtitleFloat 3s ease-in-out infinite,
+        subtitleShake 0.6s ease-in-out infinite,
+        subtitleFade 4s ease-in-out infinite 0.5s;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    opacity: 1;
+}
+
+.animated-subtitle.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* 角色展示区域 */
+.character-showcase {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    margin: 60px 0;
+    flex-wrap: wrap;
+}
+
+.character-item {
+    position: relative;
+    animation-duration: 3s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+.character-item.floating {
+    animation-name: float;
+}
+
+.character-item.floating-delay {
+    animation-name: float;
+    animation-delay: 0.5s;
+}
+
+.character-item.floating-delay-2 {
+    animation-name: float;
+    animation-delay: 1s;
+}
+
+.character-gif,
+.character-img {
+    width: 200px;
+    height: auto;
+    filter: drop-shadow(0 10px 30px rgba(255, 170, 225, 0.5));
+    transition: transform 0.3s ease;
+}
+
+.character-item:hover .character-gif,
+.character-item:hover .character-img {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* 文字粒子画布 */
+#text-particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 15;
+}
+
+/* 粒子效果 */
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.particle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    animation: particleFloat 8s infinite ease-in-out;
+}
+
+.particle:nth-child(1) {
+    left: 10%;
+    animation-delay: 0s;
+    animation-duration: 6s;
+}
+
+.particle:nth-child(2) {
+    left: 20%;
+    animation-delay: 1s;
+    animation-duration: 8s;
+}
+
+.particle:nth-child(3) {
+    left: 30%;
+    animation-delay: 2s;
+    animation-duration: 7s;
+}
+
+.particle:nth-child(4) {
+    left: 40%;
+    animation-delay: 0.5s;
+    animation-duration: 9s;
+}
+
+.particle:nth-child(5) {
+    left: 50%;
+    animation-delay: 1.5s;
+    animation-duration: 6.5s;
+}
+
+.particle:nth-child(6) {
+    left: 60%;
+    animation-delay: 2.5s;
+    animation-duration: 8.5s;
+}
+
+.particle:nth-child(7) {
+    left: 70%;
+    animation-delay: 0.8s;
+    animation-duration: 7.5s;
+}
+
+.particle:nth-child(8) {
+    left: 80%;
+    animation-delay: 1.8s;
+    animation-duration: 9.5s;
+}
+
+.particle:nth-child(9) {
+    left: 90%;
+    animation-delay: 0.3s;
+    animation-duration: 6.8s;
+}
+
+.particle:nth-child(10) {
+    left: 15%;
+    animation-delay: 2.2s;
+    animation-duration: 8.2s;
+}
+
+/* 进入按钮 */
+.button-container {
+    margin-top: 60px;
+    animation: fadeInUp 1s ease-out 0.8s both;
+}
+
+.enter-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px 50px;
+    background: linear-gradient(135deg, #ff69b4 0%, #ffaae1 100%);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: 24px;
+    font-weight: bold;
+    box-shadow: 
+        0 10px 30px rgba(255, 105, 180, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.enter-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.enter-button:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.enter-button:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 
+        0 15px 40px rgba(255, 105, 180, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.button-text {
+    position: relative;
+    z-index: 1;
+    letter-spacing: 2px;
+}
+
+.button-icon {
+    position: relative;
+    z-index: 1;
+    font-size: 28px;
+    animation: arrowMove 1.5s ease-in-out infinite;
+}
+
+/* 底部装饰 */
+.footer-decoration {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(255, 170, 225, 0.3), transparent);
+    clip-path: polygon(0 30%, 100% 0%, 100% 100%, 0% 100%);
+    animation: waveMove 4s ease-in-out infinite;
+}
+
+/* 动画定义 */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes titleGlow {
+    0%, 100% {
+        text-shadow: 
+            0 0 20px rgba(255, 170, 225, 0.8),
+            0 0 40px rgba(255, 192, 232, 0.6),
+            0 0 60px rgba(255, 224, 240, 0.4),
+            4px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    50% {
+        text-shadow: 
+            0 0 30px rgba(255, 170, 225, 1),
+            0 0 60px rgba(255, 192, 232, 0.8),
+            0 0 90px rgba(255, 224, 240, 0.6),
+            4px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+}
+
+@keyframes titleWave {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.3;
+    }
+    50% {
+        transform: translateY(-10px) rotate(2deg);
+        opacity: 0.5;
+    }
+}
+
+@keyframes titleShake {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    25% {
+        transform: translateY(-8px);
+    }
+    75% {
+        transform: translateY(8px);
+    }
+}
+
+@keyframes titleFade {
+    0%, 40% {
+        opacity: 1;
+        visibility: visible;
+    }
+    50%, 90% {
+        opacity: 0;
+        visibility: hidden;
+    }
+    100% {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+@keyframes subtitleShake {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    25% {
+        transform: translateY(-6px);
+    }
+    75% {
+        transform: translateY(6px);
+    }
+}
+
+@keyframes subtitleFade {
+    0%, 40% {
+        opacity: 1;
+        visibility: visible;
+    }
+    50%, 90% {
+        opacity: 0;
+        visibility: hidden;
+    }
+    100% {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+@keyframes subtitleFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    33% {
+        transform: translateY(-20px) rotate(2deg);
+    }
+    66% {
+        transform: translateY(-10px) rotate(-2deg);
+    }
+}
+
+
+@keyframes particleFloat {
+    0% {
+        transform: translateY(100vh) translateX(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px) translateX(50px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes arrowMove {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(5px);
+    }
+}
+
+@keyframes waveMove {
+    0%, 100% {
+        clip-path: polygon(0 30%, 100% 0%, 100% 100%, 0% 100%);
+    }
+    50% {
+        clip-path: polygon(0 25%, 100% 5%, 100% 100%, 0% 100%);
+    }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .animated-title {
+        font-size: 60px;
+        letter-spacing: 5px;
+    }
+    
+    .animated-subtitle {
+        font-size: 24px;
+        letter-spacing: 4px;
+    }
+    
+    .character-gif,
+    .character-img {
+        width: 120px;
+    }
+    
+    
+    .enter-button {
+        padding: 15px 40px;
+        font-size: 20px;
+    }
+}
+
